@@ -1,0 +1,26 @@
+itinerary-on-map
+├── css
+│   ├── styles-2.css
+│   ├── styles-3.css
+│   ├── styles.css
+│   └── styles.tar.gz
+├── data
+│   └── itinerary-on-map-data.json
+├── images
+│   └── Dummy-Image_1200x800.jpg
+├── index.html
+├── itinerary-on-map-no-img.html
+├── itinerary-on-map-no-img-refactored-claude.md
+├── itinerary-on-map-template-w-clickhandler.html
+├── js
+│   ├── compare-js-functions.sh
+│   ├── create-grid-overlay.js
+│   ├── dataLoader.js
+│   ├── extracted-a.js
+│   ├── extracted-b.js
+│   ├── grid.js
+│   └── highlighter.js
+├── old-index.html
+└── project-structure.txt
+
+4 directories, 19 files

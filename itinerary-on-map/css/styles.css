@@ -1,0 +1,54 @@
+/* Base Styles */
+body {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 10px;
+}
+
+/* Grid Container */
+.container {
+    position: relative;
+    width: 1238px;
+    height: 839px;
+    display: grid;
+    grid-template-columns: repeat(60, 1fr);
+    grid-template-rows: repeat(40, 1fr);
+    gap: 0px; /* Optional: add gap between cells */
+}
+
+/* Grid Cell Styles */
+.cell {
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.cell:hover {
+    border-color: #999;
+}
+
+.highlighted {
+    background-color: rgba(127, 127, 255, 0.9);
+}
+
+/* Right Column Styles */
+#rightCol {
+    flex: 1;
+    padding-left: 1rem;
+    max-width: 400px;
+}
+
+#clickIndicator {
+    margin-top: 1rem;
+    line-height: 1.5;
+}
+
+code {
+    background-color: #f5f5f5;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: monospace;
+}

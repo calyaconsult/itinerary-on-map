@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Grid Overlay</title>
+  <link rel="stylesheet" href="css/styles-3.css">
+  <!-- styles-2.css wird hiermit obsolet -->
+  <style>
+    main {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Image plus Grid (Template)</h1>
+  <div class="image-container" id="image-container">
+      <img id="target-image" src="images/Dummy-Image_1200x800.jpg" width="1200" height="800" alt="Dummy Image">
+      <div id="grid-overlay" class="grid-overlay"></div>
+      <div id="cell-highlight" class="cell-highlight"></div>
+      <div id="coordinates-display" class="coordinates-display"></div>
+  </div>
+</main>
+<script>
+// Configuration
+const config = {
+    rows: 40,     // Number of rows
+    columns: 60,  // Number of columns
+    color: 'rgba(128, 128, 255, 0.5)', // Grid line color
+    thickness: 1  // Grid line thickness in pixels
+};
+// Initialize when image loads
+const init = () => {
+    createGridOverlay();
+    //setupClickHandler();
+    console.log('Initialized grid overlay'); // Debug log
+};
+
+document.getElementById('target-image').onload = init;
+if (document.getElementById('target-image').complete) init();
+
+function createGridOverlay() {
+    const overlay = document.getElementById('grid-overlay');
+    overlay.innerHTML = '';
+
+    // Create horizontal lines
+    const rowSpacing = 100 / config.rows;
+    for (let i = 1; i < config.rows; i++) {
+        const line = document.createElement('div');
+        line.className = 'grid-line horizontal-line';
+        line.style.top = `${i * rowSpacing}%`;
+        line.style.backgroundColor = config.color;
+        line.style.height = `${config.thickness}px`;
+        overlay.appendChild(line);
+    }
+
+    // Create vertical lines
+    const columnSpacing = 100 / config.columns;
+    for (let i = 1; i < config.columns; i++) {
+        const line = document.createElement('div');
+        line.className = 'grid-line vertical-line';
+        line.style.left = `${i * columnSpacing}%`;
+        line.style.backgroundColor = config.color;
+        line.style.width = `${config.thickness}px`;
+        overlay.appendChild(line);
+    }
+}
+</script>
+</body>
+</html>

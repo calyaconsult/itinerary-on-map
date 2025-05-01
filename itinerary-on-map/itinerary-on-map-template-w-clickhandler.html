@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Grid Overlay with Click Tracking</title>
+    <link rel="stylesheet" href="css/styles-3.css">
+    <script src="js/create-grid-overlay.js"></script>
+</head>
+<body>
+    <div class="image-container" id="image-container">
+        <img id="target-image" src="images/Dummy-Image_1200x800.jpg" width="1200" height="800" alt="Dummy Image">
+        <div id="grid-overlay" class="grid-overlay"></div>
+        <div id="cell-highlight" class="cell-highlight"></div>
+        <div id="coordinates-display" class="coordinates-display"></div>
+    </div>
+    <div id="rightcol">
+      <h1>Image plus Grid and ClickHandler (Template)</h1>
+      <div id="clickindicator">[ ]</div>
+      <div><button id="clickclearer" onClick="clearClicks()">Reset Clicks</button></div>
+  <pre>Key Features:
+  Single-Click Tracking: Each click is recorded exactly once in the accumulator
+
+  Visual Feedback:
+
+  Red highlight on clicked cell
+
+  Coordinates display in bottom-right corner
+
+  Debugging Tools:
+
+  Console logs for tracking clicks
+
+  Global clearClicks() and getClicks() functions
+
+  Proper Initialization:
+
+  Handles both cached and loading images
+
+  Prevents duplicate event listeners
+
+  How to Use:
+  Click anywhere on the image to:
+
+  Highlight the cell
+
+  See coordinates
+
+  Add to click history
+
+  Use these in console:
+
+  getClicks() - Returns all recorded clicks
+
+  clearClicks() - Resets the accumulator and UI
+
+  The grid remains customizable by modifying the config object.
+
+  This version should work perfectly with no duplicate clicks in the accumulator.
+  </pre>
+        <p>For grid without image, showing the grid cells that were clicked on the present page see <a href="itinerary-on-map-no-img.html">itinerary-on-map-no-img.html</a></p>
+</div>
+    <script src="js/extracted-a.js"></script>
+</body>
+</html>
