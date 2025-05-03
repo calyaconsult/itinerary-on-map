@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Grid Overlay with Click Tracking</title>
+    <link rel="stylesheet" href="css/style-a1.css">
+    <style></style>
+</head>
+<body>
+    <div class="image-container" id="image-container">
+        <img id="target-image" src="images/5eb55dc4-4c5c-4ac0-8611-b65371db1025.png" width="879" height="972" alt="Baden Württemberg">
+        <div id="grid-overlay" class="grid-overlay"></div>
+        <div id="cell-highlight" class="cell-highlight"></div>
+        <div id="coordinates-display" class="coordinates-display"></div>
+    </div>
+    <div id="rightcol">
+      <h1>Image plus Grid and ClickHandler (Template)</h1>
+      <div id="clickindicator">[ ]</div>
+      <div><button id="clickclearer" onClick="clearClicks()">Reset Clicks</button></div>
+  <pre>
+    some text
+  </pre>
+  <p>Some text</p>
+</div>
+<script>
+     // Configuration
+     const config = {
+         rows: 97,     // Number of rows = img.width / 20
+         columns: 88,  // Number of columns = img.height / 20
+         color: 'rgba(128, 128, 255, 0.5)', // Grid line color
+         thickness: 1  // Grid line thickness in pixels
+     };
+
+     function createGridOverlay() {
+         const overlay = document.getElementById('grid-overlay');
+         overlay.innerHTML = '';
+
+         // Create horizontal lines
+         const rowSpacing = 100 / config.rows;
+         for (let i = 1; i < config.rows; i++) {
+             const line = document.createElement('div');
+             line.className = 'grid-line horizontal-line';
+             line.style.top = `${i * rowSpacing}%`;
+             line.style.backgroundColor = config.color;
+             line.style.height = `${config.thickness}px`;
+             overlay.appendChild(line);
+         }
+
+         // Create vertical lines
+         const columnSpacing = 100 / config.columns;
+         for (let i = 1; i < config.columns; i++) {
+             const line = document.createElement('div');
+             line.className = 'grid-line vertical-line';
+             line.style.left = `${i * columnSpacing}%`;
+             line.style.backgroundColor = config.color;
+             line.style.width = `${config.thickness}px`;
+             overlay.appendChild(line);
+         }
+     }
+
+
+     // Click accumulator
+     const clickAccu = () => {
+         let accu = [];
+         return (coords, action) => {
+             if (action === 'add') {
+                 accu.push(coords);
+                 console.log('Added:', coords); // Debug log
+                 return true;
+             } else if (action === 'clear') {
+                 accu = [];
+                 return false;
+             } else {
+                 return [...accu]; // Return a copy
+             }
+         }
+     };
+     const addToAccu = clickAccu();
+
+     // Initialize when image loads
+     const init = () => {
+         createGridOverlay();
+         setupClickHandler();
+         console.log('Initialized grid overlay'); // Debug log
+     };
+
+     document.getElementById('target-image').onload = init;
+     if (document.getElementById('target-image').complete) init();
+
+     // function createGridOverlay() => moved to create-grid-overlay.js
+
+     function setupClickHandler() {
+         const container = document.getElementById('image-container');
+         // Remove previous listener to avoid duplicates
+         container.removeEventListener('click', handleClick);
+         container.addEventListener('click', handleClick);
+         console.log('Click handler set up'); // Debug log
+     }
+
+     function handleClick(e) {
+         const { row, column } = getCellCoordinates(e);
+         addToAccu({ row, column }, 'add');
+         updateCellHighlight(row, column);
+         updateCoordinatesDisplay(row, column);
+         const accuStatus = addToAccu();
+         const clickIndicator = document.getElementById('clickindicator');
+         clickIndicator.textContent = JSON.stringify(accuStatus,null,2);
+         console.log('Current clicks:', accuStatus); // Debug log
+     }
+
+     function updateCellHighlight(row, column) {
+         const highlight = document.getElementById('cell-highlight');
+         highlight.style.display = 'block';
+         highlight.style.left = `${(column - 1) * (100 / config.columns)}%`;
+         highlight.style.top = `${(row - 1) * (100 / config.rows)}%`;
+         highlight.style.width = `${100 / config.columns}%`;
+         highlight.style.height = `${100 / config.rows}%`;
+     }
+
+     function updateCoordinatesDisplay(row, column) {
+         const display = document.getElementById('coordinates-display');
+         display.textContent = `Row: ${row}, Column: ${column}`;
+         display.style.display = 'block';
+     }
+
+     function getCellCoordinates(e) {
+         const image = document.getElementById('target-image');
+         const rect = image.getBoundingClientRect();
+         const x = e.clientX - rect.left;
+         const y = e.clientY - rect.top;
+         const cellWidth = rect.width / config.columns;
+         const cellHeight = rect.height / config.rows;
+
+         const column = Math.min(config.columns, Math.max(1, Math.floor(x / cellWidth) + 1));
+         const row = Math.min(config.rows, Math.max(1, Math.floor(y / cellHeight) + 1));
+
+         return { row, column };
+     }
+
+     // Utility functions
+     window.clearClicks = () => {
+         const clickIndicator = document.getElementById('clickindicator');
+         clickIndicator.innerHTML = '[ ]';
+         addToAccu(null, 'clear');
+         document.getElementById('cell-highlight').style.display = 'none';
+         document.getElementById('coordinates-display').style.display = 'none';
+         console.log('Cleared all clicks');
+     };
+
+     window.getClicks = () => addToAccu();
+</script>
+</body>
+</html>

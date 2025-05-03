@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Static Grid with Highlights</title>
+  <link rel="stylesheet" href="css/style-a2.css">
+  <style>
+   body {
+     font-family: sans-serif;
+   }
+   .cachee {
+     display: none;
+   }
+  </style>
+</head>
+<body>
+  <h1>Highlighted Grid Cells</h1>
+  <p id="explainer"></p>
+  <p id="button-1"></p>
+  <!-- Use the button if you want to manually select a JSON file -->
+  <!-- input type="file" id="jsonFileInput" accept=".json" -->
+  <div class="grid-container" id="grid-container">
+    <div class="grid-overlay" id="grid-overlay"></div>
+  </div>
+
+  <script>
+    const config = {
+      rows: 97,
+      columns: 88,
+      jsonfile: 'bw-stationen-on-map.json'
+    };
+
+    const overlay = document.getElementById('grid-overlay');
+
+    function drawGrid() {
+      const rowSpacing = 100 / config.rows;
+      for (let i = 1; i < config.rows; i++) {
+        const line = document.createElement('div');
+        line.className = 'grid-line horizontal-line';
+        line.style.top = `${i * rowSpacing}%`;
+        overlay.appendChild(line);
+      }
+
+      const colSpacing = 100 / config.columns;
+      for (let i = 1; i < config.columns; i++) {
+        const line = document.createElement('div');
+        line.className = 'grid-line vertical-line';
+        line.style.left = `${i * colSpacing}%`;
+        overlay.appendChild(line);
+      }
+    }
+
+    function highlightCells(cells) {
+      cells.forEach(({ row, column }) => {
+        const cell = document.createElement('div');
+        cell.className = 'highlight';
+        cell.style.left = `${(column - 1) * (100 / config.columns)}%`;
+        cell.style.top = `${(row - 1) * (100 / config.rows)}%`;
+        cell.style.width = `${100 / config.columns}%`;
+        cell.style.height = `${100 / config.rows}%`;
+        overlay.appendChild(cell);
+      });
+    }
+
+/* Use this code if you want to manually select a JSON file to highlight the clicked cells */
+/*
+    const explainer = document.getElementById('explainer');
+    explainer.textContent = 'Manually select JSON file';
+    const selectFileButton = document.getElementById('button-1');
+    selectFileButton.innerHTML = 'Select your <code>clicked-cells.json</code> file:';
+    document.getElementById('jsonFileInput').addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const cells = JSON.parse(e.target.result);
+          highlightCells(cells);
+        } catch (err) {
+          alert('Invalid JSON file.');
+        }
+      };
+      reader.readAsText(file);
+    });
+*/
+/* Use this code if you want to load the JSON file without manual action */
+/**/
+    const explainer = document.getElementById('explainer');
+    explainer.textContent = `JSON file: data/${config.jsonfile}`;
+    const selectFileButton = document.getElementById('button-1');
+    selectFileButton.classList.add('cachee'); // hides the button
+    document.addEventListener('DOMContentLoaded', function() {
+        // Wait until the page is fully loaded
+
+        // Assuming you have a JSON file named 'data.json'
+        const jsonFilePath = `data/${config.jsonfile}`;
+
+        // Read JSON file asynchronously
+        fetch(jsonFilePath)
+            .then(response => response.json())
+            .then(data => {
+                // Call a function that processes the data
+                processJsonData(data);
+            })
+            .catch(error => {
+                console.error('Error loading JSON file:', error);
+            });
+
+        function processJsonData(data) {
+            // Your function to process the JSON data goes here
+            console.log('Processing data:', data);
+            highlightCells(data);
+        }
+    });
+/**/
+    drawGrid();
+  </script>
+</body>
+</html>
